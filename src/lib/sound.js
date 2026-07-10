@@ -14,7 +14,7 @@ export function unlockAudio() {
   }
 }
 
-export function playChime() {
+function playChime() {
   const ctx = getContext()
   if (!ctx) return
   const now = ctx.currentTime
@@ -32,4 +32,19 @@ export function playChime() {
     osc.start(startAt)
     osc.stop(startAt + 0.75)
   })
+}
+
+let alarmIntervalId = null
+
+export function startAlarm() {
+  if (alarmIntervalId) return
+  playChime()
+  alarmIntervalId = setInterval(playChime, 1200)
+}
+
+export function stopAlarm() {
+  if (alarmIntervalId) {
+    clearInterval(alarmIntervalId)
+    alarmIntervalId = null
+  }
 }

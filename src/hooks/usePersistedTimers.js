@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { playChime, unlockAudio } from '../lib/sound'
+import { startAlarm, stopAlarm, unlockAudio } from '../lib/sound'
 import {
   createTimer,
   loadTimers,
@@ -105,7 +105,10 @@ export function usePersistedTimers() {
           prevStatuses.get(timer.id) === 'running',
       )
     ) {
-      playChime()
+      startAlarm()
+    }
+    if (!timers.some((timer) => timer.status === 'finished')) {
+      stopAlarm()
     }
     prevStatusesRef.current = new Map(
       timers.map((timer) => [timer.id, timer.status]),
